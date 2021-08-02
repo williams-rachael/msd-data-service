@@ -8,6 +8,7 @@ public class ProjectDataServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectDataServiceApplication.class, args);
+		System.out.println("Johar is amazing");
 	}
 
 }

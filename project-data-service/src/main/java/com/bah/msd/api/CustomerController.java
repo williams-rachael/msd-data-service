@@ -1,4 +1,4 @@
-package com.bah.msd.web;
+package com.bah.msd.api;
 
 import java.util.Collection;
 

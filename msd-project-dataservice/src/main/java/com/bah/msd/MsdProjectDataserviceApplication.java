@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MsdProjectDataserviceApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Phase 2 MSD Data Service Application Project");
+		System.out.println("Phase 2 MSD Data Service Application Project is starting now");
 		SpringApplication.run(MsdProjectDataserviceApplication.class, args);
 	}
 

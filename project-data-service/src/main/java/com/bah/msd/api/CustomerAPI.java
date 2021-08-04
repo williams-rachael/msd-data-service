@@ -1,6 +1,7 @@
 package com.bah.msd.api;
 
 import java.net.URI;
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,38 @@ public class CustomerAPI {
 	}
 	
 	// TODO: get and post by name?? Was included in Fox's solution
-	
+	//lookupCustomerByName GET
+		@GetMapping("/byname/{username}")
+		public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("username") String username,
+				UriComponentsBuilder uri) {
+		//	ApiLogger.log("username: " + username);
+			
+			Iterator<Customer> customers = customerRepo.findAll().iterator();
+			while(customers.hasNext()) {
+				Customer cust = customers.next();
+				if(cust.getName().equalsIgnoreCase(username)) {
+					ResponseEntity<?> response = ResponseEntity.ok(cust);
+					return response;				
+				}			
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+		//lookupCustomerByName POST
+		@PostMapping("/byname")
+		public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String username, UriComponentsBuilder uri) {
+			//ApiLogger.log("username: " + username);
+			Iterator<Customer> customers = customerRepo.findAll().iterator();
+			while(customers.hasNext()) {
+				Customer cust = customers.next();
+				if(cust.getName().equals(username)) {
+					ResponseEntity<?> response = ResponseEntity.ok(cust);
+					return response;
+
+				}
+			}
+			return null;
+		}
 	@PostMapping
 	public ResponseEntity<?> addCustomer(@RequestBody Customer newCustomer, UriComponentsBuilder uri){
 		if (newCustomer.getId() != 0 || newCustomer.getName() == null || newCustomer.getEmail() == null) {

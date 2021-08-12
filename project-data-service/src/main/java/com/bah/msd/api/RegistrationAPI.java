@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.bah.msd.domain.Registration;
+import com.bah.msd.logging.ApiLogger;
 import com.bah.msd.repository.RegistrationRepository;
 
 @RestController
@@ -29,16 +30,19 @@ public class RegistrationAPI {
 	
 	@GetMapping
 	public Iterable<Registration> getAll() {
+		ApiLogger.log("REST request to get all registrations");
 		return regRepo.findAll();
 	}
 
 	@GetMapping("/{registrationId}")
 	public Optional<Registration> getRegistrationById(@PathVariable("registrationId") long id) {
+		ApiLogger.log("REST request to get registration id " + id);
 		return regRepo.findById(id);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addCustomer(@RequestBody Registration newRegistration, UriComponentsBuilder uri){
+	public ResponseEntity<?> addRegistration(@RequestBody Registration newRegistration, UriComponentsBuilder uri){
+		ApiLogger.log("REST request to add new registration");
 		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() == 0 
 				|| newRegistration.getCustomer_id() == 0 || newRegistration.getRegistration_date() == null) {
 			return ResponseEntity.badRequest().build();
@@ -52,8 +56,9 @@ public class RegistrationAPI {
 	}
 	
 	@PutMapping("/{registrationId}")
-	public ResponseEntity<?> putCustomer(@RequestBody Registration newRegistration, 
+	public ResponseEntity<?> putRegistration(@RequestBody Registration newRegistration, 
 			@PathVariable("registrationId") long registrationId){
+		ApiLogger.log("REST request to update registration id " + registrationId);
 		if (newRegistration.getId() != registrationId || newRegistration.getEvent_id() == 0 
 				|| newRegistration.getCustomer_id() == 0 ) {
 			return ResponseEntity.badRequest().build();
@@ -63,7 +68,8 @@ public class RegistrationAPI {
 	}
 	
 	@DeleteMapping("/{registrationId}")
-	public ResponseEntity<?> deleteCustomer(@PathVariable("registrationId") long id){
+	public ResponseEntity<?> deleteRegistration(@PathVariable("registrationId") long id){
+		ApiLogger.log("REST request to delete registration id " + id);
 		regRepo.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

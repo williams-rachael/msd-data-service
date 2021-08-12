@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bah.msd.logging.ApiLogger;
+
 
 @RestController
 @RequestMapping("/")
@@ -19,6 +21,7 @@ public class ServiceAPI {
 	
 	@GetMapping
 	public String healthCheck() {
+		ApiLogger.log("REST request for data service health check");
 		count += 1;
 		Date date = new Date();
 		String dateformat = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.FULL).format(date);

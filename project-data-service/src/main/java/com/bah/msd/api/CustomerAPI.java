@@ -31,11 +31,13 @@ public class CustomerAPI {
 	
 	@GetMapping
 	public Iterable<Customer> getAll() {
+		ApiLogger.log("REST request to get all customers");
 		return customerRepo.findAll();
 	}
 
 	@GetMapping("/{customerId}")
 	public Optional<Customer> getCustomerById(@PathVariable("customerId") long id) {
+		ApiLogger.log("REST request to get customer id " + id);
 		return customerRepo.findById(id);
 	}
 	
@@ -43,7 +45,7 @@ public class CustomerAPI {
 	@GetMapping("/byname/{username}")
 	public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("username") String username,
 			UriComponentsBuilder uri) {
-		ApiLogger.log("username: " + username);
+		ApiLogger.log("REST request to get customer with username: " + username);
 			
 		Iterator<Customer> customers = customerRepo.findAll().iterator();
 		while(customers.hasNext()) {
@@ -59,7 +61,7 @@ public class CustomerAPI {
 	//lookupCustomerByName POST
 	@PostMapping("/byname")
 	public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String username, UriComponentsBuilder uri) {
-		ApiLogger.log("username: " + username);
+		ApiLogger.log("REST request to post customer with username: " + username);
 		Iterator<Customer> customers = customerRepo.findAll().iterator();
 		while(customers.hasNext()) {
 			Customer cust = customers.next();
@@ -73,6 +75,7 @@ public class CustomerAPI {
 	
 	@PostMapping
 	public ResponseEntity<?> addCustomer(@RequestBody Customer newCustomer, UriComponentsBuilder uri){
+		ApiLogger.log("REST request to add new customer"); 
 		if (newCustomer.getId() != 0 || newCustomer.getName() == null || newCustomer.getEmail() == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -87,6 +90,7 @@ public class CustomerAPI {
 	@PutMapping("/{customerId}")
 	public ResponseEntity<?> putCustomer(@RequestBody Customer newCustomer, 
 			@PathVariable("customerId") long customerId){
+		ApiLogger.log("REST request to update customer id " + customerId);
 		if (newCustomer.getId() != customerId || newCustomer.getName() == null 
 				|| newCustomer.getEmail() == null) {
 			return ResponseEntity.badRequest().build();
@@ -97,6 +101,7 @@ public class CustomerAPI {
 	
 	@DeleteMapping("/{customerId}")
 	public ResponseEntity<?> deleteCustomer(@PathVariable("customerId") long id){
+		ApiLogger.log("REST request to delete customer id " + id);
 		customerRepo.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

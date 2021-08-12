@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.bah.msd.domain.Event;
+import com.bah.msd.logging.ApiLogger;
 import com.bah.msd.repository.EventRepository;
 
 @RestController
@@ -29,16 +30,19 @@ public class EventAPI {
 	
 	@GetMapping
 	public Iterable<Event> getAll() {
+		ApiLogger.log("REST request to get all events");
 		return eventRepo.findAll();
 	}
 
 	@GetMapping("/{eventId}")
 	public Optional<Event> getEventById(@PathVariable("eventId") long id) {
+		ApiLogger.log("REST request to get event id " + id);
 		return eventRepo.findById(id);
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> addEvent(@RequestBody Event newEvent, UriComponentsBuilder uri) {
+		ApiLogger.log("REST request to add new event");
 		if (newEvent.getId() != 0 || newEvent.getCode() == null || newEvent.getTitle() == null || newEvent.getDescription() == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -50,11 +54,10 @@ public class EventAPI {
 	}
 
 	@PutMapping("/{eventId}")
-	public ResponseEntity<?> putEvent(
-			@RequestBody Event newEvent,
-			@PathVariable("eventId") long eventId) 
-	{
-		if (newEvent.getId() != eventId || newEvent.getCode() == null || newEvent.getTitle() == null || newEvent.getDescription() == null) {
+	public ResponseEntity<?> putEvent(@RequestBody Event newEvent, @PathVariable("eventId") long eventId) {
+		ApiLogger.log("REST request to update event id " + eventId);
+		if (newEvent.getId() != eventId || newEvent.getCode() == null || newEvent.getTitle() == null 
+				|| newEvent.getDescription() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newEvent = eventRepo.save(newEvent);
@@ -63,7 +66,7 @@ public class EventAPI {
 	
 	@DeleteMapping("/{eventId}")
 	public ResponseEntity<?> deleteEventById(@PathVariable("eventId") long id) {
-		// repo.delete(id);
+		ApiLogger.log("REST request to delete event id " + id);
 		eventRepo.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}	

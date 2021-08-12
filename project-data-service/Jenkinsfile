@@ -1,6 +1,6 @@
 node {
     stage ("Checkout DataApi"){
-        git branch: 'develop', url: '/home/osboxes/MSDProject/projectRepo/msd-data-service-repo'
+        git branch: 'develop', url: 'https://github.com/williams-rachael/msd-data-service.git'
     }
     
     stage ("Gradle Build - DataApi") {

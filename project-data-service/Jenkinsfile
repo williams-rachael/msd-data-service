@@ -32,6 +32,8 @@ node {
 	
 	if(response=="Yes") {
 	   stage('Deploy to Kubenetes cluster - DataApi') {
+	      sh "sudo chown -R $USER /home/osboxes/.kube/config"
+		   //error loading config file "/home/osboxes/.kube/config": open /home/osboxes/.kube/config: permission denied
 	      sh "kubectl create deployment event-data --image=event-data:v1.0"
 	      sh "kubectl expose deployment event-data --type=LoadBalancer --port=8080"
 	   }

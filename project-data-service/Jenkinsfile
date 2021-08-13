@@ -12,7 +12,7 @@ node {
     }
 
     stage ("Containerize the app-docker build - DataApi") {
-        sh 'docker build -t event-data:v1.0 --file ./project-data-service/Dockerfile .'
+        sh 'docker build -t event-data:v1.0 --file ./project-data-service/Dockerfile ./project-data-service'
     }
     
     stage ("Inspect the docker image - DataApi"){
